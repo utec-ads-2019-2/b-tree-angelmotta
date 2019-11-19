@@ -16,7 +16,7 @@ class BTree {
             // TODO
         } 
 
-        bool insert(T data) {
+        void insert(T data) {
             if(!root){
                 root = new Node<T>(degree, true);   // for this first node isLeaf = True
                 root->keys[0] = data;
@@ -46,7 +46,7 @@ class BTree {
         }
 
         void print() {
-            // TODO
+            if(root) root->traverse();
         }
 
         //~BTree();
