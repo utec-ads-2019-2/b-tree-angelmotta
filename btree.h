@@ -12,8 +12,13 @@ class BTree {
     public:
         BTree(unsigned int degree) : degree(degree), root(nullptr) {};
 
-        T search(int k) { 
-            // TODO
+        bool search(int k) {
+            if(!root){
+                return false;
+            }
+            else{
+                return root->search(k) != nullptr;      // if search result is different to nullptr return True otherwise return False
+            }
         } 
 
         void insert(T data) {
@@ -47,9 +52,15 @@ class BTree {
 
         void print() {
             if(root) root->traverse();
+            cout << '\n';
         }
 
-        //~BTree();
+        ~BTree(){
+            cout << "Call Destructor\n";
+            if(root){
+                root->killSelf();
+            }
+        }
 };
 
 #endif

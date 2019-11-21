@@ -18,9 +18,25 @@ class Node {
 
     public: 
         Node(unsigned int size, bool isLeaf) : size(size), isLeaf(isLeaf) {
-            keys.resize(size - 1);
-            children.resize(size);
+            keys.resize(2*size - 1);
+            children.resize(2*size);
             current_num_keys = 0;
+        }
+
+        Node* search(int k){
+            int idx=0;
+            while(idx < current_num_keys && k > keys[idx]){     // if K is greater than current key in the node go to the next key
+                idx++;
+            }
+            if(keys[idx] == k){
+                return this;
+            }
+            else if(isLeaf){
+                return nullptr;
+            }
+            else{
+                return children[idx]->search(k);    // Recursive call: go down to the child and search
+            }
         }
 
         void traverse(){
@@ -29,7 +45,7 @@ class Node {
                 if(!isLeaf){    // if It is internal node then traverse the subtree rooted at childer[i] and after that print keys[i]
                     children[idx]->traverse();      // recursive call
                 }
-                cout << " " << keys[idx];
+                cout << keys[idx] << " ";
             }
             // Finally print the subtree rooted with last child (the rightmost position child)
             if(!isLeaf){    // if it is internal node it has child
@@ -71,6 +87,7 @@ class Node {
 
         // Metodo invocado cuando el node y esta full
         void splitChild(int idx, Node<T>* y){
+            cout << "Split Child \n";
             // Creamos el nodo que va a tener (size - 1) keys de y
             auto newNode = new Node<T>(y->size, y->isLeaf);
             newNode->current_num_keys = size - 1;
@@ -101,11 +118,18 @@ class Node {
             keys[idx] = y->keys[size - 1];  // Copia el key central de y hacia el nuevo nodo
             current_num_keys += 1;
         }
-        /**
-         * An alternative is to create two different nodes (Internal and Leaf) that inherite from Node 
-         * an implement this function
-         */
-        //virtual bool isLeaf() = 0;
+
+        void killSelf(){
+            if(!isLeaf){    // If is internal Node go down
+                for(int i=0; i<children.size(); ++i){
+                    if(children[i]){
+                        children[i]->killSelf();
+                    }
+                }
+            }
+            delete this;    // if I arrived here is a Leaf, so delete it
+        }
+
      friend class BTree <T>;
 };
 
