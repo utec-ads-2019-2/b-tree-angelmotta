@@ -22,5 +22,7 @@ int main(int argc, char *argv[]) {
     treecampeon.print();
     cout << boolalpha << treecampeon.search(6) << '\n';
     cout << boolalpha << treecampeon.search(13) << '\n';
+    // No se está insertando de la manera correcta
+    // Hay problemas con el destructor
     return EXIT_SUCCESS;
 }

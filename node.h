@@ -2,6 +2,7 @@
 #define NODE_H
 
 #include <vector>
+#include <queue>
 
 using namespace std;
 
@@ -129,6 +130,31 @@ class Node {
             }
             delete this;    // if I arrived here is a Leaf, so delete it
         }
+
+         void recorrerNodes() {
+            queue<pair<Node<T>*, int>> next;
+            next.push(pair<Node<T>*, int>(this, 0));
+
+            while (!next.empty()) {
+                auto temp = next.front();
+                next.pop();
+
+                temp.first->printIndexes(temp.second);
+
+                for (int i = 0; i < temp.first->children.size(); i++) {
+                    next.push(pair<Node<T>*, int>(temp.first->children[i], temp.second + 2));
+                }
+
+                cout << endl;
+            }  
+    }
+
+    void printIndexes(int level) {
+        cout << level << ": ";
+        for (int i = 0; i < keys.size(); i++) {
+            cout << keys[i] << " ";
+        }
+    }
 
      friend class BTree <T>;
 };

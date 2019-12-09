@@ -51,7 +51,7 @@ class BTree {
         }
 
         void print() {
-            if(root) root->traverse();
+            if(root) root->recorrerNodes();
             cout << '\n';
         }
 
